@@ -1,0 +1,90 @@
+﻿@model Employees
+@{
+    ViewData["Title"] = "Create";
+    var districts = ViewBag.Districts as List<District>;
+    var municipalities = ViewBag.Municipalities as List<Municipality>;
+
+
+}
+
+<h2>Create Employee</h2>
+
+<form method="post">
+    <div class="col-md-12 d-flex">
+        <div class="col-md-6">
+            <label for="employeeName" class="form-label">Employee Name</label>
+            <input type="text" class="form-control" id="employeeName" name="EmployeeName" />
+        </div>
+        <div class="col-md-6">
+            <label for="mobileNumber" class="form-label">Mobile Number</label>
+            <input type="number" class="form-control" id="mobileNumber" name="MobileNumber" />
+        </div>
+    </div>
+    <br>
+    <div class="col-md-12 d-flex">
+        <div class="col-md-6">
+            <label for="districtDropdown">District</label>
+            <select class="form-select" id="districtDropdown" name="DistrictId">
+                <option value="">Select District</option>
+                @foreach (var district in districts)
+                {
+                    <option value="@district.DistrictId">@district.DistrictName</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="municipalityDropdown">Municipality</label>
+            <select class="form-select" id="municipalityDropdown" name="MunicipalityId">
+                <option value="">Select Municipality</option>
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="col-md-12 d-flex">
+        <div class="col-md-6">
+            <label for="tole" class="form-label">Tole</label>
+            <input type="text" class="form-control" id="tole" name="Tole" />
+        </div>
+        <div class="col-md-6">
+            <label for="wardNumber" class="form-label">Ward Number</label>
+            <input type="number" class="form-control" id="wardNumber" name="WardNumber" />
+        </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+    @section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#districtDropdown').change(function () {
+                var districtId = $(this).val();
+                if (districtId) {
+                    $.ajax({
+                        url: '/Employees/GetMunicipalitiesByDistrict',
+                        type: 'POST',
+                        data: { districtId: districtId },
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            $('#municipalityDropdown').empty();
+                            $('#municipalityDropdown').append($('<option>').text('Select Municipality').attr('value', ''));
+                            $.each(data, function (index, municipality) {
+                                debugger;
+                                $('#municipalityDropdown').append($('<option>').text(municipality.municipalityName).attr('value', municipality.municipalityId));
+                            });
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                } else {
+                    $('#municipalityDropdown').empty();
+                    $('#municipalityDropdown').append($('<option>').text('Select Municipality').attr('value', ''));
+                }
+            });
+        });
+    </script>
+}

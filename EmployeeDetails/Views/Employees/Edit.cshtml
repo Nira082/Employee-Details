@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model Employees
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Employees</h2>
+ 
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="EmployeeId" />
+
+    <div class="form-group">
+        <label asp-for="EmployeeName">Name:</label>
+        <input asp-for="EmployeeName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MobileNumber">Mobile Number:</label>
+        <input asp-for="MobileNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Tole">Tole:</label>
+        <input asp-for="Tole" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="WardNumber">Ward Number:</label>
+        <input asp-for="WardNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MunicipalityId">Municipality:</label>
+        <select asp-for="MunicipalityId" asp-items="@(new SelectList(ViewBag.Municipalities, "MunicipalityId", "MunicipalityName"))" class="form-control"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form> 
+
+<a asp-action="Index">Back to List</a>
+
+
+
